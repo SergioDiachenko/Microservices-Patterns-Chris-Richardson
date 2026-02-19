@@ -53,3 +53,26 @@ may, however, encounter several obstacles:
      – Decompose by business capability, which has its origins in business architecture
      – Decompose by subdomain, based on concepts from domain-driven design
 
+ ### Interprocess communication in a microservice architecture
+
+ #### Semantic versioning
+ - MAJOR—When you make an incompatible change to the API
+ - MINOR—When you make backward-compatible enhancements to the API
+ - PATCH—When you make a backward-compatible bug fix
+
+##### MAKING MINOR, BACKWARD-COMPATIBLE CHANGES
+- Adding optional attributes to request
+- Adding attributes to a response
+- Adding new operations
+
+##### MAKING MAJOR, BREAKING CHANGE
+
+#### Message format
+There are two main categories of message formats: text and binary
+##### TEXT-BASED MESSAGE FORMAT
+The first category is text-based formats such as JSON and XML. A downside of using a text-based messages format is that the messages tend to be verbose, especially XML. Every message has the overhead of containing the names of
+the attributes in addition to their values. Another drawback is the overhead of parsing text, especially when messages are large. Consequently, if efficiency and performance are important, you may want to consider using a binary format. 
+##### BINARY MESSAGE FORMATS
+There are several different binary formats to choose from. Popular formats include Protocol Buffers (https://developers.google.com/protocol-buffers/docs/overview) and Avro (https://avro.apache.org).
+#### Communicating using the synchronous Remote procedure invocation pattern
+
