@@ -44,3 +44,12 @@ may, however, encounter several obstacles:
  Obtaining a consistent view of the data
 
  A saga is a sequence of local transactions that are coordinated using messaging.
+
+ ### Summary chapter 2
+ - Architecture determines your application’s -ilities, including maintainability, testability, and deployability, which directly impact development velocity.
+ - The microservice architecture is an architecture style that gives an application high maintainability, testability, and deployability.
+ - Services in a microservice architecture are organized around business concerns—business capabilities or subdomains—rather than technical concerns.
+ - There are two patterns for decomposition:
+     – Decompose by business capability, which has its origins in business architecture
+     – Decompose by subdomain, based on concepts from domain-driven design
+
