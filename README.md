@@ -141,3 +141,12 @@ further attempts fail immediately. A large number of requests failing suggeststh
 After a timeout period, the client should try again, and, if successful, close thecircuit breaker.
 
 For example, the Polly library is popular in the .NET community (https://github.com/App-vNext/Polly). 
+
+**Using service discovery**
+Say you’re writing some code that invokes a service that has a REST API. In order to make a request, your code needs to know the network location (IP address and port) of a service instance. In a traditional application running on physical hardware, the
+network locations of service instances are usually static. For example, your code could read the network locations from a configuration file that’s occasionally updated. But in a modern, cloud-based microservices application, it’s usually not that simple. As is
+shown in figure 3.4, a modern application is much more dynamic.
+ Service instances have dynamically assigned network locations. Moreover, the set of service instances changes dynamically because of autoscaling, failures, and upgrades. Consequently, your client code must use a service discovery.
+
+ <img width="916" height="661" alt="image" src="https://github.com/user-attachments/assets/50608a99-f642-4520-9fb8-84700df8a52c" />
+
