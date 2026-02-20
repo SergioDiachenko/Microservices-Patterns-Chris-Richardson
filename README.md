@@ -75,4 +75,23 @@ the attributes in addition to their values. Another drawback is the overhead of 
 ##### BINARY MESSAGE FORMATS
 There are several different binary formats to choose from. Popular formats include Protocol Buffers (https://developers.google.com/protocol-buffers/docs/overview) and Avro (https://avro.apache.org).
 #### Communicating using the synchronous Remote procedure invocation pattern
+Figure 3.1 shows how RPI works. The business logic in the client invokes a proxy interface , implemented by an RPI proxy adapter class. The RPI proxy makes a request to
+the service. The request is handled by an RPI server adapter class, which invokes the service’s business logic via an interface. It then sends back a reply to the RPI proxy, which returns the result to the client’s business logic.
+
+Pattern: Remote procedure invocation
+A client invokes a service using a synchronous, remote procedure invocation-basedprotocol, such as REST (http://microservices.io/patterns/communication-style/messaging.html)
+
+<img width="926" height="616" alt="image" src="https://github.com/user-attachments/assets/d810b376-7105-4eed-b555-5f55d970dc65" />
+##### Using REST
+Today, it’s fashionable to develop APIs in the RESTful style (https://en.wikipedia.org/wiki/Representational_state_transfer). REST is an IPC mechanism that (almostalways) uses HTTP. Roy Fielding, the creator of REST, defines REST as follows:
+REST provides a set of architectural constraints that, when applied as a whole, emphasizes scalability of component interactions, generality of interfaces, independent deployment ofcomponents, and intermediary components to reduce interaction latency, enforce security,
+and encapsulate legacy systems.
+
+##### THE REST MATURITY MODEL
+Leonard Richardson (no relation to your author) defines a very useful maturity model
+for REST (http://martinfowler.com/articles/richardsonMaturityModel.html) that consists of the following levels:
+- Level 0—Clients of a level 0 service invoke the service by making HTTP POST requests to its sole URL endpoint. Each request specifies the action to perform, the target of the action (for example, the business object), and any parameters.
+- Level 1—A level 1 service supports the idea of resources. To perform an action on a resource, a client makes a POST request that specifies the action to perform and any parameters.
+- Level 2—A level 2 service uses HTTP verbs to perform actions: GET to retrieve, POST to create, and PUT to update. The request query parameters and body, if any, specify the actions' parameters. This enables services to use web infrastructure such as caching for GET requests.
+- Level 3—The design of a level 3 service is based on the terribly named HATEOAS (Hypertext As The Engine Of Application State) principle. The basic idea is that the representation of a resource returned by a GET request contains links for performing actions on that resource. For example, a client can cancel an order using a link in the representation returned by the GET request that retrieved the order. The benefits of HATEOAS include no longer having to hard-wire URLs into client code (www.infoq.com/news/2009/04/hateoas-restful-api-advantages).
 
