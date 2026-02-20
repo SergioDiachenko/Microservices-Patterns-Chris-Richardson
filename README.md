@@ -95,3 +95,49 @@ for REST (http://martinfowler.com/articles/richardsonMaturityModel.html) that co
 - Level 2—A level 2 service uses HTTP verbs to perform actions: GET to retrieve, POST to create, and PUT to update. The request query parameters and body, if any, specify the actions' parameters. This enables services to use web infrastructure such as caching for GET requests.
 - Level 3—The design of a level 3 service is based on the terribly named HATEOAS (Hypertext As The Engine Of Application State) principle. The basic idea is that the representation of a resource returned by a GET request contains links for performing actions on that resource. For example, a client can cancel an order using a link in the representation returned by the GET request that retrieved the order. The benefits of HATEOAS include no longer having to hard-wire URLs into client code (www.infoq.com/news/2009/04/hateoas-restful-api-advantages).
 
+**BENEFITS AND DRAWBACKS OF REST**
+- It’s simple and familiar.
+- You can test an HTTP API from within a browser using, for example, the Postman plugin, or from the command line using curl (assuming JSON or some other text format is used).
+- It directly supports request/response style communication.
+- HTTP is, of course, firewall friendly.
+- It doesn’t require an intermediate broker, which simplifies the system’s architecture.
+
+**There are some drawbacks to using REST:**
+- It only supports the request/response style of communication.
+- Reduced availability. Because the client and service communicate directly without an intermediary to buffer messages, they must both be running for the duration of the exchange.
+- Clients must know the locations (URLs) of the service instances(s). As described in section 3.2.4, this is a nontrivial problem in a modern application. Clients must use what is known as a service discovery mechanism to locate service instances.
+- Fetching multiple resources in a single request is challenging.
+- It’s sometimes difficult to map multiple update operations to HTTP verbs.
+
+#### Using gRPC
+You define your gRPC APIs using a Protocol Buffers-based IDL, which is Google’s language-neutral mechanism for serializing structured data. You use the Protocol Buffer compiler to generate client-side stubs and server-side skeletons. The compiler can generate code for a variety of languages, including Java, C#, NodeJS, and GoLang. Clients and servers exchange binary messages in the Protocol Buffers format using HTTP/2
+
+A gRPC API consists of one or more services and request/response message definitions. A service definition is analogous to a Java interface and is a collection of strongly typed methods. As well as supporting simple request/response RPC, gRPC support
+streaming RPC. A server can reply with a stream of messages to the client. Alternatively, a client can send a stream of messages to the server.
+
+**gRPC has several benefits:**
+- It’s straightforward to design an API that has a rich set of update operations.
+- It has an efficient, compact IPC mechanism, especially when exchanging large messages.
+- Bidirectional streaming enables both RPI and messaging styles of communication.
+- It enables interoperability between clients and services written in a wide range of languages.
+**gRPC also has several drawbacks:**
+- It takes more work for JavaScript clients to consume gRPC-based API than REST/JSON-based APIs.
+- Older firewalls might not support HTTP/2.
+
+## Circuit breaker pattern
+Pattern: Circuit breaker
+An RPI proxy that immediately rejects invocations for a timeout period after the number of consecutive failures exceeds a specified threshold. See http://microservices.io/patterns/reliability/circuit-breaker.html.
+
+**DEVELOPING ROBUST RPI PROXIES**
+
+Whenever one service synchronously invokes another service, it should protect itself
+using the approach described by Netflix (http://techblog.netflix.com/2012/02/faulttolerance-in-high-volume.html). This approach consists of a combination of the following mechanisms:
+- Network timeouts—Never block indefinitely and always use timeouts when waiting for a response. Using timeouts ensures that resources are never tied up
+indefinitely.
+- Limiting the number of outstanding requests from a client to a service—Impose an upperbound on the number of outstanding requests that a client can make to a particular service. If the limit has been reached, it’s probably pointless to make
+additional requests, and those attempts should fail immediately.
+- Circuit breaker pattern—Track the number of successful and failed requests, and if the error rate exceeds some threshold, trip the circuit breaker so that
+further attempts fail immediately. A large number of requests failing suggeststhat the service is unavailable and that sending more requests is pointless.
+After a timeout period, the client should try again, and, if successful, close thecircuit breaker.
+
+For example, the Polly library is popular in the .NET community (https://github.com/App-vNext/Polly). 
