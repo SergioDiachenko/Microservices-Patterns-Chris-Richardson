@@ -150,3 +150,16 @@ shown in figure 3.4, a modern application is much more dynamic.
 
  <img width="916" height="661" alt="image" src="https://github.com/user-attachments/assets/50608a99-f642-4520-9fb8-84700df8a52c" />
 
+There are two main ways to implement service discovery:
+- The services and their clients interact directly with the service registry.
+- The deployment infrastructure handles service discovery
+
+APPLYING THE APPLICATION-LEVEL SERVICE DISCOVERY PATTERNS
+One way to implement service discovery is for the application’s services and their clients to interact with the service registry. Figure 3.5 shows how this works. A service
+instance registers its network location with the service registry. A service client invokes
+a service by first querying the service registry to obtain a list of service instances. It
+then sends a request to one of those instances
+
+Pattern: Self registration
+A service instance registers itself with the service registry. http://microservices.io/patterns/self-registration.html
+
